@@ -9,7 +9,8 @@ const DEFAULT_WIDTH = 200;
 const DEFAULT_LENGTH = 6;
 const DEFAULT_MIN_CIRCLE = 10;
 const DEFAULT_MAX_CIRCLE = 25;
-const DEFAULT_CHARSET = '1234567890abcdefghijklmnoprstuvyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const DEFAULT_CHARSET = '1234567890abcdefghijklmnoprstuvyzABCDEFGHIJKLMN@#'.split('');
+const COLORS = ['white', 'black', 'random'];
 
 class Captcha {
 	/**
@@ -63,7 +64,7 @@ class Captcha {
 		this.quality = params.quality || 0.7;
 
 		/** @type {'black' | 'white' | 'random'} */
-		this.color = params.color || 'random';
+		this.color = params.color || COLORS[Math.floor(Math.random() * COLORS.length)];
 
 		/** @type {import('canvas').Canvas} */
 		this._canvas = createCanvas(this.width, this.height);
@@ -93,8 +94,8 @@ class Captcha {
 
 	drawImage() {
 		this.fillBackground();
-		this.printText();
 		this.addCircles();
+		this.printText();
 
 		return this._canvas.toDataURL('image/jpeg', this.quality);
 	}
