@@ -1,14 +1,22 @@
-"use strict";
-var http = require("http");
-var captcha = require("./");
-var PORT = 8181;
+'use strict';
+const http = require('http');
+const Captcha = require('.');
+const PORT = 8181;
 
 function handleRequest(req, res) {
-  if (req.method === "GET" && (req.url === '/' || req.url.indexOf("index") > -1)){
-    let result = captcha();
-    let source = result.image;
-    res.end(
-      `
+	if (req.method === 'GET' && (req.url === '/' || req.url.indexOf('index') > -1)) {
+		const result = new Captcha({
+			length: 8,
+			width: 350,
+			height: 100,
+			color: 'random',
+		});
+
+		console.log(result);
+
+		const source = result.image;
+		res.end(
+			`
     <!doctype html>
     <html>
         <head>
@@ -16,20 +24,21 @@ function handleRequest(req, res) {
         </head>
         <body>
         <label>Test image</label>
-        <img src="${source}" />
+        <div><img src="${source}" /></div>
         </body>
     </html>
-    `
-    );
-  }else{
-      res.end('');
-  }
+    `,
+		);
+	}
+	else {
+		res.end('');
+	}
 }
 
-//Create a server
-var server = http.createServer({}, handleRequest);
+// Create a server
+const server = http.createServer({}, handleRequest);
 
-//Start server
+// Start server
 server.listen(PORT, function() {
-  console.log("Server listening on: http://localhost:" + PORT);
+	console.log('Server listening on: http://localhost:' + PORT);
 });
