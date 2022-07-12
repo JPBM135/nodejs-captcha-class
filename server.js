@@ -9,7 +9,6 @@ function handleRequest(req, res) {
 			length: 8,
 			width: 350,
 			height: 100,
-			color: 'random',
 		});
 
 		console.log(result);
